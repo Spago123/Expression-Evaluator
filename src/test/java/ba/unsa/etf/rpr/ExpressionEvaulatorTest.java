@@ -3,8 +3,6 @@ package ba.unsa.etf.rpr;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.Collections;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -130,7 +128,7 @@ public class ExpressionEvaulatorTest {
      */
     @Test
     public void missingColon1(){
-        assertFalse(new ExpressionValidator().checkIfEveryLeftSemicolonIsClosed("( ( ) ) ( )"));
+        assertFalse(new ExpressionValidator().checkIfEveryLeftBracketIsClosed("( ( ) ) ( )"));
     }
 
     /**
@@ -139,7 +137,7 @@ public class ExpressionEvaulatorTest {
      */
     @Test
     public void missingColon2(){
-        assertFalse(new ExpressionValidator().checkIfEveryLeftSemicolonIsClosed("( ( ( ) )"));
+        assertFalse(new ExpressionValidator().checkIfEveryLeftBracketIsClosed("( ( ( ) )"));
     }
 
     /**
@@ -148,7 +146,7 @@ public class ExpressionEvaulatorTest {
      */
     @Test
     public void missingColon3(){
-        assertFalse(new ExpressionValidator().numberOfColonsEquals2TimesNumberOfOps("( 1 + 2 + 3 )".split(" "),false));
+        assertFalse(new ExpressionValidator().numberOfBracketsEquals2TimesNumberOfOps("( 1 + 2 + 3 )".split(" "),false));
     }
 
     /**
@@ -157,6 +155,6 @@ public class ExpressionEvaulatorTest {
      */
     @Test
     public void     missingColon4(){
-        assertFalse(new ExpressionValidator().numberOfColonsEquals2TimesNumberOfOps("( ( 1 + 2 ) + sqrt ( 4 ) + 0 )".split(" "),false));
+        assertFalse(new ExpressionValidator().numberOfBracketsEquals2TimesNumberOfOps("( ( 1 + 2 ) + sqrt ( 4 ) + 0 )".split(" "),false));
     }
 }

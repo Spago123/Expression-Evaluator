@@ -19,7 +19,7 @@ public class ExpressionValidator {
      */
     public void expressionNotValid(String expression) throws RuntimeException {
         if(!checkForCharacterValidity(expression) || !checkIfOrderIsCorrect(expression)
-            || !checkIfEveryLeftSemicolonIsClosed(expression) || !numberOfColonsEquals2TimesNumberOfOps(expression.split(" "),false))
+            || !checkIfEveryLeftBracketIsClosed(expression) || !numberOfBracketsEquals2TimesNumberOfOps(expression.split(" "),false))
             throw new RuntimeException("The expression " + expression + "cannot be evaluated");
     }
     /**
@@ -62,7 +62,7 @@ public class ExpressionValidator {
 
 
     /**
-     * Method that checks if the order of operations, numbers and colons in the expression is correct
+     * Method that checks if the order of operations, numbers and brackets in the expression is correct
      * @param expression String
      * @return true or false
      */
@@ -70,9 +70,9 @@ public class ExpressionValidator {
         String[] list = expression.split(" ");
         String nextCharacter = "(";
         for(int i = 0; i < list.length - 1; i++){
-            if(list[i].equals("(") && !afterLeftSemiColon(list[i+1])){
+            if(list[i].equals("(") && !afterLeftBracket(list[i+1])){
                 return false;
-            }else if(list[i].equals(")") && !afterRightSemiColon(list[i+1])){
+            }else if(list[i].equals(")") && !afterRightBracket(list[i+1])){
                 return false;
             }else if(new OperationDoer().isOperation(list[i]) && !afterOperation(list[i+1])){
                 return false;
@@ -84,11 +84,11 @@ public class ExpressionValidator {
     }
 
     /**
-     * Method that check if the character after the left semicolon is a number or op, or a semicolon
+     * Method that check if the character after the left bracket is a number or op, or a bracket
      * @param s String
      * @return true or false
      */
-    private boolean afterLeftSemiColon(String s){
+    private boolean afterLeftBracket(String s){
         return checkIfNumber(s) || s.equals("(") || new OperationDoer().isOneArgumentOperation(s);
     }
 
@@ -111,20 +111,20 @@ public class ExpressionValidator {
     }
 
     /**
-     * Metthod that check if the character after a right semicolon is an op or a right semicolon
+     * Metthod that check if the character after a right bracket is an op or a right bracket
      * @param s String
      * @return true or false
      */
-    private boolean afterRightSemiColon(String s){
+    private boolean afterRightBracket(String s){
         return s.equals(")") || new OperationDoer().isOperation(s);
     }
 
     /**
-     * Method that checks if the expression had every left semicolon closed
+     * Method that checks if the expression had every left bracket closed
      * @param expression String
      * @return true or false
      */
-    public boolean checkIfEveryLeftSemicolonIsClosed(String expression){
+    public boolean checkIfEveryLeftBracketIsClosed(String expression){
         String[] list = expression.split(" ");
         int openClosed = 0;
         for(int i = 1; i < list.length - 1; i++){
@@ -141,14 +141,14 @@ public class ExpressionValidator {
     }
 
     /**
-     * Method that check if the number of colons and operations matches
+     * Method that check if the number of brackets and operations matches
      * @param list String[] array
      * @param isOneArgument if true we are checking the statement in a one argument op, if not it's an expression
      * @return true or false
      */
-    public boolean numberOfColonsEquals2TimesNumberOfOps(String[] list, boolean isOneArgument){
+    public boolean numberOfBracketsEquals2TimesNumberOfOps(String[] list, boolean isOneArgument){
         int multiplier = isOneArgument ? 2 : 0;
-        int ops2Counter = 0, colonCounter = 0;
+        int ops2Counter = 0, bracketCounter = 0;
        //String[] list = expression.split(" ");
         for ( int i = 0; i < list.length; i++){
             if(doer.isTwoArgumentOperation(list[i])){
@@ -164,17 +164,17 @@ public class ExpressionValidator {
                         rights++;
                     }
                 }
-                if(!numberOfColonsEquals2TimesNumberOfOps(Arrays.copyOfRange(list,i+1,j),true)){
+                if(!numberOfBracketsEquals2TimesNumberOfOps(Arrays.copyOfRange(list,i+1,j),true)){
                     return false;
                 }
                 i = j - 1;
             } else if(list[i].equals("(") || list[i].equals(")")){
-                colonCounter++;
+                bracketCounter++;
             }
         }
 
-        return (colonCounter-multiplier==2 * ( ops2Counter ) )
-                || (colonCounter == 2 && ops2Counter == 0);
+        return (bracketCounter-multiplier==2 * ( ops2Counter ) )
+                || (bracketCounter == 2 && ops2Counter == 0);
     }
 }
 
